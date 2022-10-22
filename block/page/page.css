@@ -1,6 +1,12 @@
 .page {
   max-width: 880px;
   margin: 0 auto;
-  padding-top: 45px;
+  padding: 45px 0 60px;
   font-family: 'Inter';
+}
+
+@media screen and (max-width: 767px) {
+  .page {
+    padding: 28px 0 36px;
+  }
 }

@@ -1,8 +1,0 @@
-.button__image {
-  display: block;
-}
-
-.button__image:hover {
-  cursor: pointer;
-  filter: brightness(0) saturate(100%) invert(70%) sepia(5%) saturate(3%) hue-rotate(314deg) brightness(87%) contrast(84%);
-}

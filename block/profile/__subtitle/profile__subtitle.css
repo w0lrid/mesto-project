@@ -5,3 +5,10 @@
   font-size: 18px;
   font-weight: 400;
 }
+
+@media screen and (max-width: 767px) {
+  .profile__subtitle {
+    line-height: 16.94px;
+    font-size: 14px;
+  }
+}

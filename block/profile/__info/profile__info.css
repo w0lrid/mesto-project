@@ -1,3 +1,11 @@
 .profile__info {
-  margin-right: 244px;
+  flex-basis: 580px;
+}
+
+@media screen and (max-width: 767px) {
+  .profile__info {
+    flex-basis: 0;
+    margin-bottom: 36px;
+    text-align: center;
+  }
 }
