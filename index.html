@@ -20,64 +20,68 @@
         <div class="profile__info">
           <div class="profile__title">
             <h1 class="profile__name">Жак-Ив Кусто</h1>
-            <div class="profile__edit-button"></div>
+            <button type="button" class="profile__edit-button"></button>
           </div>
           <p class="profile__subtitle">Исследователь океана</p>
         </div>
-        <div class="profile__add-button"></div>
+        <button type="button" class="profile__add-button"></button>
       </section>
       <section class="cards-gallery">
-        <div class="card">
+        <article class="card">
           <img src="./images/karachayevsk.jpg" alt="Карачаевск" class="card__image">
           <div class="card__info">
             <h2 class="card__title">Карачаевск</h2>
-            <div class="card__like-button"></div>
+            <button type="button" class="card__like-button"></button>
           </div>
-        </div>
-        <div class="card">
+        </article>
+        <article class="card">
           <img src="./images/mount_elbrus.jpg" alt="гора Эльбрус" class="card__image">
           <div class="card__info">
             <h2 class="card__title">Гора Эльбрус</h2>
-            <div class="card__like-button"></div>
+            <button type="button" class="card__like-button"></button>
           </div>
-        </div>
-        <div class="card">
+        </article>
+        <article class="card">
           <img src="./images/dombay.jpg" alt="Домбай" class="card__image">
           <div class="card__info">
             <h2 class="card__title">Домбай</h2>
-            <div class="card__like-button"></div>
+            <button type="button" class="card__like-button"></button>
           </div>
-        </div>
-        <div class="card">
+        </article>
+        <article class="card">
           <img src="./images/mount_elbrus.jpg" alt="гора Эльбрус" class="card__image">
           <div class="card__info">
             <h2 class="card__title">Гора Эльбрус</h2>
-            <div class="card__like-button"></div>
+            <button type="button" class="card__like-button"></button>
           </div>
-        </div>
-        <div class="card">
+        </article>
+        <article class="card">
           <img src="./images/dombay.jpg" alt="Домбай" class="card__image">
           <div class="card__info">
             <h2 class="card__title">Домбай</h2>
-            <div class="card__like-button"></div>
+            <button type="button" class="card__like-button"></button>
           </div>
-        </div>
-        <div class="card">
+        </article>
+        <article class="card">
           <img src="./images/karachayevsk.jpg" alt="Карачаевск" class="card__image">
           <div class="card__info">
             <h2 class="card__title">Карачаево-Черкесия</h2>
-            <div class="card__like-button"></div>
+            <button type="button" class="card__like-button"></button>
           </div>
-        </div>
+        </article>
       </section>
       <section class="popup">
-        <div class="popup__container">
+        <form class="popup__form" name="profile">
           <h2 class="popup__title">Редактировать профиль</h2>
-          <input type="text" id="name" class="popup__input">
-          <input type="text" id="description" class="popup__input">
-          <button class="button popup__button">Сохранить</button>
-          <img src="./images/close-button.svg" alt="закрыть форму редактирования" class="popup__close">
-        </div>
+          <fieldset class="popup__input-container">
+            <input type="text" name="name" id="name" class="popup__input">
+          </fieldset>
+          <fieldset class="popup__input-container">
+            <input type="text" name="description" id="description" class="popup__input">
+          </fieldset>
+          <button type="submit" class="button popup__button">Сохранить</button>
+          <button type="button" class="popup__close"></button>
+        </form>
       </section>
     </main>
     <footer class="footer">

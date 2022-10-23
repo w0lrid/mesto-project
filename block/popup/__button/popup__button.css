@@ -3,10 +3,13 @@
   padding: 14px 0 18px;
   display: flex;
   justify-content: center;
-  color: #fff;
   background-color: #000;
   border: none;
   border-radius: 2px;
+  color: #fff;
+  line-height: 21.78px;
+  font-size: 18px;
+  font-weight: 400;
 }
 
 .popup__button:hover {
@@ -18,5 +21,7 @@
   .popup__button {
     width: 238px;
     padding-bottom: 14px;
+    line-height: 16.94px;
+    font-size: 14px;
   }
 }

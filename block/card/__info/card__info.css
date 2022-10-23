@@ -1,7 +1,7 @@
 .card__info {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
   padding-right: 15px;
   padding-left: 21px;
 }
