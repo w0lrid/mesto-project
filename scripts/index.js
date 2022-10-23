@@ -11,6 +11,11 @@ const saveButton = document.querySelector('.popup__button');
 const closeButton = document.querySelector('.popup__close');
 const popup = document.querySelector('.popup')
 
+if (localStorage.length > 0) {
+  profileName.textContent = localStorage.getItem('profile_name')
+  profileDescription.textContent = localStorage.getItem('profile_description')
+}
+
 likeButtons.forEach((button) => {
   button.addEventListener('click', () => {
     if (button.classList.contains('card__like-button_active')) {
@@ -33,7 +38,10 @@ saveButton.addEventListener('click', (event) => {
 
   profileName.textContent = nameInput.value
   profileDescription.textContent = descriptionInput.value
-  
+
+  localStorage.setItem('profile_name', profileName.textContent)
+  localStorage.setItem('profile_description', profileDescription.textContent)
+
   popup.classList.remove('popup_active')
 })
 
