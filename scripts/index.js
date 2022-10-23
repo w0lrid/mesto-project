@@ -1,7 +1,12 @@
+// common elements
 const likeButtons = document.querySelectorAll('.card__like-button');
-const profileName = document.querySelector('.profile__name').textContent;
-const profileDescription = document.querySelector('.profile__subtitle').textContent;
+const profileName = document.querySelector('.profile__name')/* .textContent */;
+const profileDescription = document.querySelector('.profile__subtitle')/* .textContent */;
 const editButton = document.querySelector('.profile__edit-button');
+
+// popup elements
+const nameInput = document.getElementById('name')
+const descriptionInput = document.getElementById('description')
 const saveButton = document.querySelector('.popup__button');
 const closeButton = document.querySelector('.popup__close');
 const popup = document.querySelector('.popup')
@@ -17,16 +22,18 @@ likeButtons.forEach((button) => {
 })
 
 editButton.addEventListener('click', () => {
-  const nameInput = document.getElementById('name')
-  nameInput.value = profileName
-
-  const descriptionInput = document.getElementById('description')
-  descriptionInput.value = profileDescription
+  nameInput.value = profileName.textContent
+  descriptionInput.value = profileDescription.textContent
 
   popup.classList.add('popup_active')
 });
 
-saveButton.addEventListener('click', () => {
+saveButton.addEventListener('click', (event) => {
+  event.preventDefault()
+
+  profileName.textContent = nameInput.value
+  profileDescription.textContent = descriptionInput.value
+  
   popup.classList.remove('popup_active')
 })
 
