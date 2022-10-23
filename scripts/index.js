@@ -1,7 +1,7 @@
 // common elements
 const likeButtons = document.querySelectorAll('.card__like-button');
-const profileName = document.querySelector('.profile__name')/* .textContent */;
-const profileDescription = document.querySelector('.profile__subtitle')/* .textContent */;
+const profileName = document.querySelector('.profile__name');
+const profileDescription = document.querySelector('.profile__subtitle');
 const editButton = document.querySelector('.profile__edit-button');
 
 // popup elements
@@ -11,9 +11,12 @@ const saveButton = document.querySelector('.popup__button');
 const closeButton = document.querySelector('.popup__close');
 const popup = document.querySelector('.popup')
 
-if (localStorage.length > 0) {
+if (localStorage.getItem('profile_name') && localStorage.getItem('profile_description')) {
   profileName.textContent = localStorage.getItem('profile_name')
   profileDescription.textContent = localStorage.getItem('profile_description')
+} else {
+  profileName.textContent = 'Жак-Ив Кусто';
+  profileDescription.textContent = 'Исследователь океана';
 }
 
 likeButtons.forEach((button) => {
