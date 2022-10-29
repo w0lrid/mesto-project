@@ -5,11 +5,12 @@ const profileDescription = document.querySelector('.profile__subtitle');
 const editButton = document.querySelector('.profile__edit-button');
 
 // popup elements
-const nameInput = document.getElementById('name')
+const popup = document.querySelector('.popup');
+const popupForm = popup.querySelector('.popup__form');
+const nameInput = document.getElementById('name');
 const descriptionInput = document.getElementById('description')
 const saveButton = document.querySelector('.popup__button');
 const closeButton = document.querySelector('.popup__close');
-const popup = document.querySelector('.popup')
 
 if (localStorage.getItem('profile_name') && localStorage.getItem('profile_description')) {
   profileName.textContent = localStorage.getItem('profile_name')
@@ -21,11 +22,7 @@ if (localStorage.getItem('profile_name') && localStorage.getItem('profile_descri
 
 likeButtons.forEach((button) => {
   button.addEventListener('click', () => {
-    if (button.classList.contains('card__like-button_active')) {
-      button.classList.remove('card__like-button_active');
-    } else {
-      button.classList.add('card__like-button_active');
-    }
+    button.classList.toggle('card__like-button_active');
   })
 })
 
@@ -36,18 +33,17 @@ editButton.addEventListener('click', () => {
   popup.classList.add('popup_active')
 });
 
-saveButton.addEventListener('click', (event) => {
+popupForm.addEventListener('submit', (event) => {
   event.preventDefault()
-
+  
   profileName.textContent = nameInput.value
   profileDescription.textContent = descriptionInput.value
-
+  
   localStorage.setItem('profile_name', profileName.textContent)
   localStorage.setItem('profile_description', profileDescription.textContent)
-
+  
   popup.classList.remove('popup_active')
 })
-
 
 closeButton.addEventListener('click', () => {
   popup.classList.remove('popup_active')

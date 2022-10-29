@@ -1,5 +1,7 @@
 .popup__form {
   position: relative;
+  width: 430px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   background-color: white;
@@ -10,6 +12,7 @@
 
 @media screen and (max-width: 767px) {
   .popup__form {
+    width: 282px;
     padding: 25px 22px;
   }
 }
