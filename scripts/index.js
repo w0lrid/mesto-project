@@ -1,16 +1,24 @@
+import initialCards from "../config/cards.config.js";
+
 // common elements
-const likeButtons = document.querySelectorAll('.card__like-button');
+const cardsGallery = document.querySelector('.cards-gallery');
 const profileName = document.querySelector('.profile__name');
 const profileDescription = document.querySelector('.profile__subtitle');
 const editButton = document.querySelector('.profile__edit-button');
+const addCardButton = document.querySelector('.profile__add-button');
 
 // popup elements
-const popup = document.querySelector('.popup');
-const popupForm = popup.querySelector('.popup__form');
+const popups = document.querySelectorAll('.popup');
+const editProfilePopup = popups[0];
+const addCardPopup = popups[1];
+
+const popupForms = document.querySelectorAll('.popup__form');
+const editProfileForm = popupForms[0];
+const addCardForm = popupForms[1];
+
 const nameInput = document.getElementById('name');
 const descriptionInput = document.getElementById('description')
 const saveButton = document.querySelector('.popup__button');
-const closeButton = document.querySelector('.popup__close');
 
 if (localStorage.getItem('profile_name') && localStorage.getItem('profile_description')) {
   profileName.textContent = localStorage.getItem('profile_name')
@@ -20,9 +28,38 @@ if (localStorage.getItem('profile_name') && localStorage.getItem('profile_descri
   profileDescription.textContent = 'Исследователь океана';
 }
 
+function renderCard(name, link) {
+  const card = `
+    <article class="card">
+      <img src="${link}" alt="${name}" class="card__image">
+      <div class="card__info">
+        <h2 class="card__title">${name}</h2>
+        <button type="button" class="card__like-button"></button>
+      </div>
+    </article>
+  `;
+
+  
+  cardsGallery.insertAdjacentHTML('beforeend', card);
+}
+
+initialCards.forEach(({ name, link}) => {
+  renderCard(name, link);
+});
+
+const likeButtons = document.querySelectorAll('.card__like-button');
+  
 likeButtons.forEach((button) => {
   button.addEventListener('click', () => {
     button.classList.toggle('card__like-button_active');
+  })
+})
+
+popups.forEach((popup) => {
+  const closeButton = popup.querySelector('.popup__close');
+
+  closeButton.addEventListener('click', () => {
+    popup.classList.remove('popup_active')
   })
 })
 
@@ -30,10 +67,14 @@ editButton.addEventListener('click', () => {
   nameInput.value = profileName.textContent
   descriptionInput.value = profileDescription.textContent
 
-  popup.classList.add('popup_active')
+  editProfilePopup.classList.add('popup_active')
 });
 
-popupForm.addEventListener('submit', (event) => {
+addCardButton.addEventListener('click', () => {
+  addCardPopup.classList.add('popup_active');
+})
+
+editProfileForm.addEventListener('submit', (event) => {
   event.preventDefault()
   
   profileName.textContent = nameInput.value
@@ -42,9 +83,11 @@ popupForm.addEventListener('submit', (event) => {
   localStorage.setItem('profile_name', profileName.textContent)
   localStorage.setItem('profile_description', profileDescription.textContent)
   
-  popup.classList.remove('popup_active')
+  editProfilePopup.classList.remove('popup_active')
 })
 
-closeButton.addEventListener('click', () => {
-  popup.classList.remove('popup_active')
+addCardForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  addCardPopup.classList.remove('popup_active');
 })
