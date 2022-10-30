@@ -1,5 +1,7 @@
 import initialCards from "../config/cards.config.js";
 
+// ELEMENTS DECLARATION
+
 // common elements
 const cardsGallery = document.querySelector('.cards-gallery');
 const profileName = document.querySelector('.profile__name');
@@ -18,8 +20,13 @@ const addCardForm = popupForms[1];
 
 const nameInput = document.getElementById('name');
 const descriptionInput = document.getElementById('description')
-const saveButton = document.querySelector('.popup__button');
 
+const placeNameInput = document.getElementById('place__name');
+const placeLinkInput = document.getElementById('place__link');
+
+// --------------------------------
+
+// PROCESS DATA
 if (localStorage.getItem('profile_name') && localStorage.getItem('profile_description')) {
   profileName.textContent = localStorage.getItem('profile_name')
   profileDescription.textContent = localStorage.getItem('profile_description')
@@ -28,32 +35,13 @@ if (localStorage.getItem('profile_name') && localStorage.getItem('profile_descri
   profileDescription.textContent = 'Исследователь океана';
 }
 
-function renderCard(name, link) {
-  const card = `
-    <article class="card">
-      <img src="${link}" alt="${name}" class="card__image">
-      <div class="card__info">
-        <h2 class="card__title">${name}</h2>
-        <button type="button" class="card__like-button"></button>
-      </div>
-    </article>
-  `;
+// --------------------------------
 
-  
-  cardsGallery.insertAdjacentHTML('beforeend', card);
-}
+// PROCESS ELEMENTS
 
 initialCards.forEach(({ name, link}) => {
   renderCard(name, link);
 });
-
-const likeButtons = document.querySelectorAll('.card__like-button');
-  
-likeButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    button.classList.toggle('card__like-button_active');
-  })
-})
 
 popups.forEach((popup) => {
   const closeButton = popup.querySelector('.popup__close');
@@ -89,5 +77,53 @@ editProfileForm.addEventListener('submit', (event) => {
 addCardForm.addEventListener('submit', (event) => {
   event.preventDefault();
 
+  renderCard(placeNameInput.value, placeLinkInput.value);
+  placeNameInput.value = '';
+  placeLinkInput.value = '';
+
   addCardPopup.classList.remove('popup_active');
 })
+
+/* const likeButtons = document.querySelectorAll('.card__like-button');
+const deleteButtons = document.querySelectorAll('.card__delete-button');
+  
+likeButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    button.classList.toggle('card__like-button_active');
+  })
+})
+
+deleteButtons.forEach((button) => {
+  button.addEventListener('click', deleteCard)
+}) */
+
+// --------------------------------
+
+// FUNCTIONS
+function renderCard(name, link) {
+  const card = `
+    <article class="card">
+      <img src="${link}" alt="${name}" class="card__image">
+      <div class="card__image-overlay"></div>
+      <div class="card__info">
+        <h2 class="card__title">${name}</h2>
+        <button type="button" class="card__like-button"></button>
+      </div>
+      <button type="button" class="card__delete-button"></button>
+    </article>
+  `;
+
+  cardsGallery.insertAdjacentHTML('afterbegin', card);
+
+  const likeButton = document.querySelector('.card__like-button');
+  likeButton.addEventListener('click', () => {
+    likeButton.classList.toggle('card__like-button_active');
+  })
+
+  const deleteButton = document.querySelector('.card__delete-button');
+  deleteButton.addEventListener('click', deleteCard);
+}
+
+function deleteCard() {
+  this.parentElement.remove();
+}

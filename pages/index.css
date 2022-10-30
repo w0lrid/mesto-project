@@ -32,10 +32,12 @@
 /* card styles start here */
 @import url(../block/card/card.css);
 @import url(../block/card/__image/card__image.css);
+@import url(../block/card/__image-overlay/card__image-overlay.css);
 @import url(../block/card/__info/card__info.css);
 @import url(../block/card/__title/card__title.css);
 @import url(../block/card/__like-button/card__like-button.css);
 @import url(../block/card/__like-button/_active/card__like-button_active.css);
+@import url(../block/card/__delete-button/card__delete-button.css);
 
 /* footer styles start here */
 @import url(../block/footer/footer.css);
