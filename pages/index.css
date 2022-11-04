@@ -46,12 +46,13 @@
 /* popup styles start here */
 @import url(../block/popup/popup.css);
 @import url(../block/popup/_active/popup_active.css);
+@import url(../block/popup/__container/popup__container.css);
+@import url(../block/popup/__container/_type/popup__container_type_form.css);
 @import url(../block/popup/__form/popup__form.css);
 @import url(../block/popup/__title/popup__title.css);
 @import url(../block/popup/__input/popup__input.css);
 @import url(../block/popup/__button/popup__button.css);
 @import url(../block/popup/__close/popup__close.css);
-@import url(../block/popup/__card/popup__card.css);
 @import url(../block/popup/__image-container/popup__image-container.css);
 @import url(../block/popup/__card-image/popup__card-image.css);
 @import url(../block/popup/__card-caption/popup__card-caption.css);

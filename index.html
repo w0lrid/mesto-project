@@ -28,6 +28,37 @@
       </section>
       <section class="cards-gallery"></section>
       <section class="popup">
+        <div class="popup__container popup__container_type_form">
+          <h2 class="popup__title">Редактировать профиль</h2>
+          <form class="popup__form" name="profile">
+            <input type="text" name="name" id="name" class="popup__input">
+            <input type="text" name="description" id="description" class="popup__input">
+            <button type="submit" class="button popup__button">Сохранить</button>
+          </form>
+          <button type="button" class="popup__close"></button>
+        </div>
+      </section>
+      <section class="popup">
+        <div class="popup__container popup__container_type_form">
+          <h2 class="popup__title">Новое место</h2>
+          <form action="" class="popup__form">
+            <input type="text" name="place__name" id="place__name" placeholder="Название" class="popup__input">
+            <input type="text" name="place__link" id="place__link" placeholder="Ссылка на картинку" class="popup__input">
+            <button type="submit" class="button popup__button">Создать</button>
+          </form>
+          <button type="button" class="popup__close"></button>
+        </div>
+      </section>
+      <section class="popup">
+        <div class="popup__container">
+          <figure class="popup__image-container">
+            <img src="" alt="" class="popup__image">
+            <figcaption class="popup__image-caption"></figcaption>
+          </figure>
+          <button class="popup__close"></button>
+        </div>
+      </section>
+      <!-- <section class="popup">
         <form class="popup__form" name="profile">
           <h2 class="popup__title">Редактировать профиль</h2>
           <input type="text" name="name" id="name" class="popup__input">
@@ -35,8 +66,8 @@
           <button type="submit" class="button popup__button">Сохранить</button>
           <button type="button" class="popup__close"></button>
         </form>
-      </section>
-      <section class="popup">
+      </section> -->
+      <!-- <section class="popup">
         <form class="popup__form" name="new-card">
           <h2 class="popup__title">Новое место</h2>
           <input type="text" name="place__name" id="place__name" placeholder="Название" class="popup__input">
@@ -44,8 +75,8 @@
           <button type="submit" class="button popup__button">Создать</button>
           <button type="button" class="popup__close"></button>
         </form>
-      </section>
-      <section class="popup">
+      </section> -->
+      <!-- <section class="popup">
         <div class="popup__card">
           <figure class="popup__image-container">
             <img src="" alt="" class="popup__card-image">
@@ -53,7 +84,7 @@
           </figure>
           <button type="button" class="popup__close"></button>
         </div>
-      </section>
+      </section> -->
     </main>
     <footer class="footer">
       <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
