@@ -46,6 +46,7 @@
 /* popup styles start here */
 @import url(../block/popup/popup.css);
 @import url(../block/popup/_active/popup_active.css);
+@import url(../block/popup/_type/_card/popup_type_card.css);
 @import url(../block/popup/__container/popup__container.css);
 @import url(../block/popup/__container/_type/popup__container_type_form.css);
 @import url(../block/popup/__form/popup__form.css);
