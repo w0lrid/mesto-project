@@ -3,87 +3,88 @@ import initialCards from "../config/cards.config.js";
 // ELEMENTS DECLARATION
 
 // common elements
-const cardsGallery = document.querySelector('.cards-gallery');
-const profileName = document.querySelector('.profile__name');
-const profileDescription = document.querySelector('.profile__subtitle');
-const editButton = document.querySelector('.profile__edit-button');
-const addCardButton = document.querySelector('.profile__add-button');
+const cardsGallery = document.querySelector(".cards-gallery");
+const profileName = document.querySelector(".profile__name");
+const profileDescription = document.querySelector(".profile__subtitle");
+const buttonEditProfile = document.querySelector(".profile__edit-button");
+const buttonAddCard = document.querySelector(".profile__add-button");
 
-// popup elements
-const popups = document.querySelectorAll('.popup');
-const editProfilePopup = popups[0];
-const addCardPopup = popups[1];
-const cardPopup = popups[2];
+// popups
+const popups = document.querySelectorAll(".popup");
+const popupEditProfile = document.querySelector(".popup_type_edit-profile");
+const popupAddCard = document.querySelector(".popup_type_add-card");
+const cardPopup = document.querySelector(".popup_type_card");
 
-const popupForms = document.querySelectorAll('.popup__form');
-const editProfileForm = popupForms[0];
-const addCardForm = popupForms[1];
+// popup forms
+const editProfileForm = popupEditProfile.querySelector(".popup__form");
+const addCardForm = popupAddCard.querySelector(".popup__form");
 
-const nameInput = document.getElementById('name');
-const descriptionInput = document.getElementById('description')
+// popup inputs
+const nameInput = document.getElementById("name");
+const descriptionInput = document.getElementById("description");
 
-const placeNameInput = document.getElementById('place__name');
-const placeLinkInput = document.getElementById('place__link');
+const placeNameInput = document.getElementById("place__name");
+const placeLinkInput = document.getElementById("place__link");
 
 // --------------------------------
 
 // PROCESS DATA
-if (localStorage.getItem('profile_name') && localStorage.getItem('profile_description')) {
-  profileName.textContent = localStorage.getItem('profile_name')
-  profileDescription.textContent = localStorage.getItem('profile_description')
+if (localStorage.getItem("profile_name") && localStorage.getItem("profile_description")) {
+  profileName.textContent = localStorage.getItem("profile_name");
+  profileDescription.textContent = localStorage.getItem("profile_description");
 } else {
-  profileName.textContent = 'Жак-Ив Кусто';
-  profileDescription.textContent = 'Исследователь океана';
+  profileName.textContent = "Жак-Ив Кусто";
+  profileDescription.textContent = "Исследователь океана";
 }
 
 // --------------------------------
 
 // PROCESS ELEMENTS
 
-initialCards.forEach(({ name, link}) => {
+initialCards.forEach(({ name, link }) => {
   renderCard(name, link);
 });
 
 popups.forEach((popup) => {
-  const closeButton = popup.querySelector('.popup__close');
+  const closeButton = popup.querySelector(".popup__close");
 
-  closeButton.addEventListener('click', () => {
-    popup.classList.remove('popup_active')
-  })
-})
-
-editButton.addEventListener('click', () => {
-  nameInput.value = profileName.textContent
-  descriptionInput.value = profileDescription.textContent
-
-  editProfilePopup.classList.add('popup_active')
+  closeButton.addEventListener("click", () => {
+    popup.classList.remove("popup_active");
+  });
 });
 
-addCardButton.addEventListener('click', () => {
-  addCardPopup.classList.add('popup_active');
-})
+buttonEditProfile.addEventListener("click", () => {
+  nameInput.value = profileName.textContent;
+  descriptionInput.value = profileDescription.textContent;
 
-editProfileForm.addEventListener('submit', (event) => {
-  event.preventDefault()
-  
-  profileName.textContent = nameInput.value
-  profileDescription.textContent = descriptionInput.value
-  
-  localStorage.setItem('profile_name', profileName.textContent)
-  localStorage.setItem('profile_description', profileDescription.textContent)
-  
-  editProfilePopup.classList.remove('popup_active')
-})
+  popupEditProfile.classList.add("popup_active");
+});
 
-addCardForm.addEventListener('submit', (event) => {
+buttonAddCard.addEventListener("click", () => {
+  popupAddCard.classList.add("popup_active");
+});
+
+editProfileForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  profileName.textContent = nameInput.value;
+  profileDescription.textContent = descriptionInput.value;
+
+  localStorage.setItem("profile_name", profileName.textContent);
+  localStorage.setItem("profile_description", profileDescription.textContent);
+
+  popupEditProfile.classList.remove("popup_active");
+});
+
+addCardForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
   renderCard(placeNameInput.value, placeLinkInput.value);
-  placeNameInput.value = '';
-  placeLinkInput.value = '';
+  placeNameInput.value = "";
+  placeLinkInput.value = "";
 
-  addCardPopup.classList.remove('popup_active');
-})
+  popupAddCard.classList.remove("popup_active");
+});
 
 // --------------------------------
 
@@ -101,27 +102,28 @@ function renderCard(name, link) {
     </article>
   `;
 
-  cardsGallery.insertAdjacentHTML('afterbegin', card);
+  cardsGallery.insertAdjacentHTML("afterbegin", card);
 
-  const cardDOM = cardsGallery.querySelector('.card');
+  const cardDOM = cardsGallery.querySelector(".card");
 
-  cardDOM.addEventListener('click', () => {
-    cardPopup.classList.add('popup_active');
-    const image = cardPopup.querySelector('.popup__card-image');
-    const caption = cardPopup.querySelector('.popup__card-caption');
+  cardDOM.addEventListener("click", () => {
+    cardPopup.classList.add("popup_active");
+    const image = cardPopup.querySelector(".popup__image");
+    const caption = cardPopup.querySelector(".popup__card-caption");
+    console.log(image);
 
     image.src = link;
     image.alt = name;
     caption.textContent = name;
   });
 
-  const likeButton = document.querySelector('.card__like-button');
-  likeButton.addEventListener('click', () => {
-    likeButton.classList.toggle('card__like-button_active');
-  })
+  const likeButton = document.querySelector(".card__like-button");
+  likeButton.addEventListener("click", () => {
+    likeButton.classList.toggle("card__like-button_active");
+  });
 
-  const deleteButton = document.querySelector('.card__delete-button');
-  deleteButton.addEventListener('click', deleteCard);
+  const deleteButton = document.querySelector(".card__delete-button");
+  deleteButton.addEventListener("click", deleteCard);
 }
 
 function deleteCard() {
