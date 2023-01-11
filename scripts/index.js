@@ -6,6 +6,7 @@ import initialCards from "../config/cards.config.js";
 const cardTemplate = document.getElementById("card-template").content;
 
 // common elements
+const content = document.querySelector(".content");
 const cardsGallery = document.querySelector(".cards-gallery");
 const profileName = document.querySelector(".profile__name");
 const profileDescription = document.querySelector(".profile__subtitle");
@@ -41,10 +42,13 @@ initialCards.forEach(({ name, link }) => {
   renderCard(card);
 });
 
-popups.forEach((popup) => {
-  const closeButton = popup.querySelector(".popup__close");
-  closeButton.addEventListener("click", () => closePopup(popup));
-});
+popups.forEach(popup => {
+  popup.addEventListener('click', (evt) => {
+    if (evt.target.classList.contains("popup__close") || evt.target.classList.contains("popup")) {
+      evt.currentTarget.classList.remove("popup_active");
+    }
+  })
+})
 
 buttonEditProfile.addEventListener("click", setEditPopupInputs);
 
@@ -60,10 +64,6 @@ formAddCard.addEventListener("submit", handleNewCardSubmit);
 
 function openPopup(popup) {
   popup.classList.add("popup_active");
-}
-
-function closePopup(popup) {
-  popup.classList.remove("popup_active");
 }
 
 function setEditPopupInputs() {
