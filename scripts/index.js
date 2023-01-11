@@ -42,6 +42,16 @@ initialCards.forEach(({ name, link }) => {
   renderCard(card);
 });
 
+document.addEventListener('keydown', (evt) => {
+  if (evt.key.toLowerCase() === "escape") {
+    const activePopup = document.querySelector(".popup_active");
+
+    if (activePopup) {
+      activePopup.classList.remove("popup_active");
+    }
+  }
+})
+
 popups.forEach(popup => {
   popup.addEventListener('click', (evt) => {
     if (evt.target.classList.contains("popup__close") || evt.target.classList.contains("popup")) {
