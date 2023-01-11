@@ -6,8 +6,8 @@ import initialCards from "../config/cards.config.js";
 const cardTemplate = document.getElementById("card-template").content;
 
 // common elements
-const content = document.querySelector(".content");
 const cardsGallery = document.querySelector(".cards-gallery");
+const profileAvatar = document.querySelector(".profile__avatar");
 const profileName = document.querySelector(".profile__name");
 const profileDescription = document.querySelector(".profile__subtitle");
 const buttonEditProfile = document.querySelector(".profile__edit-button");
@@ -15,6 +15,7 @@ const buttonAddCard = document.querySelector(".profile__add-button");
 
 // popups
 const popups = document.querySelectorAll(".popup");
+const popupEditAvatar = document.querySelector(".popup_type_edit-avatar");
 const popupEditProfile = document.querySelector(".popup_type_edit-profile");
 const popupAddCard = document.querySelector(".popup_type_add-card");
 const cardPopup = document.querySelector(".popup_type_card");
@@ -47,7 +48,7 @@ document.addEventListener('keydown', (evt) => {
     const activePopup = document.querySelector(".popup_active");
 
     if (activePopup) {
-      activePopup.classList.remove("popup_active");
+      closePopup(activePopup)
     }
   }
 })
@@ -55,17 +56,16 @@ document.addEventListener('keydown', (evt) => {
 popups.forEach(popup => {
   popup.addEventListener('click', (evt) => {
     if (evt.target.classList.contains("popup__close") || evt.target.classList.contains("popup")) {
-      evt.currentTarget.classList.remove("popup_active");
+      closePopup(evt.currentTarget);
     }
   })
 })
 
 buttonEditProfile.addEventListener("click", setEditPopupInputs);
 
+profileAvatar.addEventListener("click", () => openPopup(popupEditAvatar));
 buttonAddCard.addEventListener("click", () => openPopup(popupAddCard));
-
 formEditProfile.addEventListener("submit", handleProfileEditSubmit);
-
 formAddCard.addEventListener("submit", handleNewCardSubmit);
 
 // --------------------------------
@@ -74,6 +74,10 @@ formAddCard.addEventListener("submit", handleNewCardSubmit);
 
 function openPopup(popup) {
   popup.classList.add("popup_active");
+}
+
+function closePopup(popup) {
+  popup.classList.remove("popup_active");
 }
 
 function setEditPopupInputs() {
@@ -119,8 +123,6 @@ function handleProfileEditSubmit() {
 
   profileName.textContent = nameInput.value;
   profileDescription.textContent = descriptionInput.value;
-
-  closePopup(popupEditProfile);
 }
 
 function handleNewCardSubmit() {
