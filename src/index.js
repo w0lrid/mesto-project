@@ -34,6 +34,7 @@ const forms = document.forms;
 
 // common elements
 const cardsGallery = document.querySelector(".cards-gallery");
+const profileAvatar = document.querySelector(".profile__avatar");
 const profileName = document.querySelector(".profile__name");
 const profileDescription = document.querySelector(".profile__subtitle");
 const buttonEditProfile = document.querySelector(".profile__edit-button");
@@ -41,6 +42,7 @@ const buttonAddCard = document.querySelector(".profile__add-button");
 
 // popups
 const popups = document.querySelectorAll(".popup");
+const popupEditAvatar = document.querySelector(".popup_type_edit-avatar");
 const popupEditProfile = document.querySelector(".popup_type_edit-profile");
 const popupAddCard = document.querySelector(".popup_type_add-card");
 const cardPopup = document.querySelector(".popup_type_card");
@@ -50,11 +52,11 @@ const formEditProfile = popupEditProfile.querySelector(".popup__form");
 const formAddCard = popupAddCard.querySelector(".popup__form");
 
 // popup elements
-const nameInput = document.getElementById("name");
-const descriptionInput = document.getElementById("description");
+const nameInput = document.getElementById("username-input");
+const descriptionInput = document.getElementById("user-description-input");
 
-const placeNameInput = document.getElementById("place__name");
-const placeLinkInput = document.getElementById("place__link");
+const placeNameInput = document.getElementById("place-name-input");
+const placeLinkInput = document.getElementById("place-link-input");
 
 const imageCardPopup = cardPopup.querySelector(".popup__image");
 const captionCardPopup = cardPopup.querySelector(".popup__image-caption");
@@ -68,17 +70,29 @@ initialCards.forEach(({name, link}) => {
   renderCard(card);
 });
 
-popups.forEach((popup) => {
-  const closeButton = popup.querySelector(".popup__close");
-  closeButton.addEventListener("click", () => closePopup(popup));
-});
+document.addEventListener('keydown', (evt) => {
+  if (evt.key.toLowerCase() === "escape") {
+    const activePopup = document.querySelector(".popup_active");
+
+    if (activePopup) {
+      closePopup(activePopup)
+    }
+  }
+})
+
+console.log(popups)
+popups.forEach(popup => {
+  popup.addEventListener('click', (evt) => {
+    if (evt.target.classList.contains("popup__close") || evt.target.classList.contains("popup")) {
+      closePopup(evt.currentTarget);
+    }
+  })
+})
 
 buttonEditProfile.addEventListener("click", setEditPopupInputs);
-
+profileAvatar.addEventListener("click", () => openPopup(popupEditAvatar));
 buttonAddCard.addEventListener("click", () => openPopup(popupAddCard));
-
 formEditProfile.addEventListener("submit", handleProfileEditSubmit);
-
 formAddCard.addEventListener("submit", handleNewCardSubmit);
 
 // --------------------------------
@@ -176,11 +190,28 @@ function checkInputValidity(formElement, inputElement) {
   }
 }
 
+function hasInvalidInput(inputList) {
+  return inputList.some(inputElement => !inputElement.validity.valid)
+}
+
+function toggleButtonState(inputList, buttonElement) {
+  if (hasInvalidInput(inputList)) {
+    buttonElement.classList.add('popup__button_inactive');
+  } else {
+    buttonElement.classList.remove('popup__button_inactive');
+  }
+}
+
 function setEventListeners(formElement) {
-  const inputList = Array.from(formElement.querySelectorAll('.popup__input'))
+  const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
+  const buttonElement = formElement.querySelector('.popup__button');
+
+  toggleButtonState(inputList, buttonElement);
+
   inputList.forEach(inputElement => {
     inputElement.addEventListener('input', () => {
       checkInputValidity(formElement, inputElement);
+      toggleButtonState(inputList, buttonElement);
     })
   })
 }
@@ -188,7 +219,10 @@ function setEventListeners(formElement) {
 function enableValidation() {
   const formList = Array.from(document.querySelectorAll('.popup__form'));
   formList.forEach(formElement => {
-    console.log(formElement)
+    formElement.addEventListener('submit', (evt) => {
+      evt.preventDefault();
+    })
+
     setEventListeners(formElement);
   })
 }
