@@ -46,12 +46,14 @@ const popups = document.querySelectorAll(".popup");
 const popupEditAvatar = document.querySelector(".popup_type_edit-avatar");
 const popupEditProfile = document.querySelector(".popup_type_edit-profile");
 const popupAddCard = document.querySelector(".popup_type_add-card");
+const popupDeleteCard = document.querySelector(".popup_type_delete-card");
 const cardPopup = document.querySelector(".popup_type_card");
 
 // popup forms
 const formEditAvatar = popupEditAvatar.querySelector(".popup__form");
 const formEditProfile = popupEditProfile.querySelector(".popup__form");
 const formAddCard = popupAddCard.querySelector(".popup__form");
+const formDeleteCard = popupDeleteCard.querySelector(".popup__form");
 
 // popup elements
 const avatarInput = document.getElementById("avatar-input");
@@ -69,6 +71,7 @@ const captionCardPopup = cardPopup.querySelector(".popup__image-caption");
 
 // PROCESS ELEMENTS
 let userID;
+let deleteCardID;
 getUser().then(({avatar, name, about, _id}) => {
   profileAvatar.src = avatar;
   profileName.textContent = name;
@@ -107,6 +110,7 @@ buttonAddCard.addEventListener("click", () => openPopup(popupAddCard));
 formEditAvatar.addEventListener("submit", handleAvatarEditSubmit);
 formEditProfile.addEventListener("submit", handleProfileEditSubmit);
 formAddCard.addEventListener("submit", handleNewCardSubmit);
+formDeleteCard.addEventListener("submit", () => removeCard(deleteCardID))
 
 // --------------------------------
 
@@ -125,6 +129,7 @@ function createCard(likes, name, link, ownerID, cardID) {
   cardElement.querySelector(".card__title").textContent = name;
   cardElementImage.src = link;
   cardElementImage.alt = name;
+  cardElement.dataset.id = cardID;
 
   cardElementImage.addEventListener("click", () => {
     openPopup(cardPopup);
@@ -136,21 +141,27 @@ function createCard(likes, name, link, ownerID, cardID) {
 
   const likeButton = cardElement.querySelector(".card__like-button");
   const cardLikesNumber = cardElement.querySelector(".card__likes-number");
-  if (likes.length > 0) {
-    cardLikesNumber.textContent = likes.length
-  }
 
-  likes.forEach(like => {
-    if (like._id === userID) {
-      likeButton.classList.add("card__like-button_active");
+  if (likes) {
+    if (likes.length > 0) {
+      cardLikesNumber.textContent = likes.length
     }
-  })
-  likeButton.addEventListener("click", () => handleLikeCard(cardID, likeButton, cardLikesNumber));
+
+    likes.forEach(like => {
+      if (like._id === userID) {
+        likeButton.classList.add("card__like-button_active");
+      }
+    })
+    likeButton.addEventListener("click", () => handleLikeCard(cardID, likeButton, cardLikesNumber));
+  }
 
   const deleteButton = cardElement.querySelector(".card__delete-button");
 
   if (userID === ownerID) {
-    deleteButton.addEventListener("click", () => removeCard(cardID));
+    deleteButton.addEventListener("click", () => {
+      deleteCardID = cardID;
+      openPopup(popupDeleteCard);
+    });
   } else {
     deleteButton.remove()
   }
@@ -189,7 +200,7 @@ function handleProfileEditSubmit() {
 function handleNewCardSubmit() {
   event.preventDefault();
 
-  const card = createCard(placeNameInput.value, placeLinkInput.value);
+  const card = createCard(0, placeNameInput.value, placeLinkInput.value, userID);
   sendCard({name: placeNameInput.value, link: placeLinkInput.value}).then(res => {
     console.log(res)
   })
@@ -214,8 +225,9 @@ function handleLikeCard(cardID, likeButton, likes) {
 }
 
 function removeCard(cardID) {
-  event.target.closest("article").remove();
-  deleteCard(cardID)
+  document.querySelector(`[data-id="${cardID}"]`).remove();
+  deleteCard(cardID);
+  closePopup(popupDeleteCard);
 }
 
 enableValidation()
