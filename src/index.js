@@ -1,15 +1,19 @@
+import {enableValidation} from "./components/validate";
+import {openPopup, closePopup} from "./components/modals";
+import {editUser, getInitialCards, getUser, sendCard, deleteCard, likeCard, unlikeCard, editAvatar} from "./api";
+
 // добавить импорты картинок проекта
 import './styles/index.css';
 
-import AddButton from '../images/add-button.svg';
-import AddButtonBig from '../images/add-button_big.svg';
-import CloseButton from '../images/close-button.svg'
-import DeleteButton from '../images/delete-button.svg'
-import EditButton from '../images/edit-button.svg'
-import EditButtonBig from '../images/edit-button_big.svg'
-import LikeButton from '../images/like-button.svg'
-import LikeButtonActive from '../images/like-button_active.svg'
-import MestoLogo from '../images/mesto_logo.svg'
+import AddButton from './images/add-button.svg';
+import AddButtonBig from './images/add-button_big.svg';
+import CloseButton from './images/close-button.svg'
+import DeleteButton from './images/delete-button.svg'
+import EditButton from './images/edit-button.svg'
+import EditButtonBig from './images/edit-button_big.svg'
+import LikeButton from './images/like-button.svg'
+import LikeButtonActive from './images/like-button_active.svg'
+import MestoLogo from './images/mesto_logo.svg'
 
 const images = [
   {name: 'add-button', image: AddButton},
@@ -23,17 +27,14 @@ const images = [
   {name: 'mesto_logo', image: MestoLogo},
 ]
 
-import initialCards from "../config/cards.config.js";
-
 // ELEMENTS DECLARATION
 
 // templates
 const cardTemplate = document.getElementById("card-template").content;
-const forms = document.forms;
-
 
 // common elements
 const cardsGallery = document.querySelector(".cards-gallery");
+const profileAvatarContainer = document.querySelector(".profile__avatar-container");
 const profileAvatar = document.querySelector(".profile__avatar");
 const profileName = document.querySelector(".profile__name");
 const profileDescription = document.querySelector(".profile__subtitle");
@@ -48,10 +49,13 @@ const popupAddCard = document.querySelector(".popup_type_add-card");
 const cardPopup = document.querySelector(".popup_type_card");
 
 // popup forms
+const formEditAvatar = popupEditAvatar.querySelector(".popup__form");
 const formEditProfile = popupEditProfile.querySelector(".popup__form");
 const formAddCard = popupAddCard.querySelector(".popup__form");
 
 // popup elements
+const avatarInput = document.getElementById("avatar-input");
+
 const nameInput = document.getElementById("username-input");
 const descriptionInput = document.getElementById("user-description-input");
 
@@ -64,11 +68,20 @@ const captionCardPopup = cardPopup.querySelector(".popup__image-caption");
 // --------------------------------
 
 // PROCESS ELEMENTS
+let userID;
+getUser().then(({avatar, name, about, _id}) => {
+  profileAvatar.src = avatar;
+  profileName.textContent = name;
+  profileDescription.textContent = about;
+  userID = _id;
+})
 
-initialCards.forEach(({name, link}) => {
-  const card = createCard(name, link);
-  renderCard(card);
-});
+getInitialCards().then(res => {
+  res.forEach(({likes, name, link, owner, _id}) => {
+    const card = createCard(likes, name, link, owner._id, _id);
+    renderCard(card);
+  });
+})
 
 document.addEventListener('keydown', (evt) => {
   if (evt.key.toLowerCase() === "escape") {
@@ -80,7 +93,6 @@ document.addEventListener('keydown', (evt) => {
   }
 })
 
-console.log(popups)
 popups.forEach(popup => {
   popup.addEventListener('click', (evt) => {
     if (evt.target.classList.contains("popup__close") || evt.target.classList.contains("popup")) {
@@ -90,23 +102,15 @@ popups.forEach(popup => {
 })
 
 buttonEditProfile.addEventListener("click", setEditPopupInputs);
-profileAvatar.addEventListener("click", () => openPopup(popupEditAvatar));
+profileAvatarContainer.addEventListener("click", () => openPopup(popupEditAvatar));
 buttonAddCard.addEventListener("click", () => openPopup(popupAddCard));
+formEditAvatar.addEventListener("submit", handleAvatarEditSubmit);
 formEditProfile.addEventListener("submit", handleProfileEditSubmit);
 formAddCard.addEventListener("submit", handleNewCardSubmit);
 
 // --------------------------------
 
 // FUNCTIONS
-
-function openPopup(popup) {
-  popup.classList.add("popup_active");
-}
-
-function closePopup(popup) {
-  popup.classList.remove("popup_active");
-}
-
 function setEditPopupInputs() {
   nameInput.value = profileName.textContent;
   descriptionInput.value = profileDescription.textContent;
@@ -114,7 +118,7 @@ function setEditPopupInputs() {
   openPopup(popupEditProfile);
 }
 
-function createCard(name, link) {
+function createCard(likes, name, link, ownerID, cardID) {
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
   const cardElementImage = cardElement.querySelector(".card__image");
 
@@ -131,12 +135,25 @@ function createCard(name, link) {
   });
 
   const likeButton = cardElement.querySelector(".card__like-button");
-  likeButton.addEventListener("click", () => {
-    likeButton.classList.toggle("card__like-button_active");
-  });
+  const cardLikesNumber = cardElement.querySelector(".card__likes-number");
+  if (likes.length > 0) {
+    cardLikesNumber.textContent = likes.length
+  }
+
+  likes.forEach(like => {
+    if (like._id === userID) {
+      likeButton.classList.add("card__like-button_active");
+    }
+  })
+  likeButton.addEventListener("click", () => handleLikeCard(cardID, likeButton, cardLikesNumber));
 
   const deleteButton = cardElement.querySelector(".card__delete-button");
-  deleteButton.addEventListener("click", deleteCard);
+
+  if (userID === ownerID) {
+    deleteButton.addEventListener("click", () => removeCard(cardID));
+  } else {
+    deleteButton.remove()
+  }
 
   return cardElement;
 }
@@ -145,12 +162,27 @@ function renderCard(card) {
   cardsGallery.prepend(card);
 }
 
+function handleAvatarEditSubmit() {
+  event.preventDefault();
+
+  profileAvatar.src = avatarInput.value;
+  editAvatar({
+    avatar: avatarInput.value,
+  })
+
+  closePopup(popupEditAvatar);
+}
+
 function handleProfileEditSubmit() {
   event.preventDefault();
 
   profileName.textContent = nameInput.value;
   profileDescription.textContent = descriptionInput.value;
 
+  editUser({
+    name: nameInput.value,
+    about: descriptionInput.value,
+  });
   closePopup(popupEditProfile);
 }
 
@@ -158,73 +190,32 @@ function handleNewCardSubmit() {
   event.preventDefault();
 
   const card = createCard(placeNameInput.value, placeLinkInput.value);
+  sendCard({name: placeNameInput.value, link: placeLinkInput.value}).then(res => {
+    console.log(res)
+  })
   renderCard(card);
   formAddCard.reset();
 
   closePopup(popupAddCard);
 }
 
-function deleteCard() {
+function handleLikeCard(cardID, likeButton, likes) {
+  likeButton.classList.toggle("card__like-button_active");
+
+  if (!Array.from(likeButton.classList).includes("card__like-button_active")) {
+    unlikeCard(cardID).then(res => {
+      likes.textContent = res.likes.length
+    })
+  } else {
+    likeCard(cardID).then(res => {
+      likes.textContent = res.likes.length
+    })
+  }
+}
+
+function removeCard(cardID) {
   event.target.closest("article").remove();
-}
-
-function showInputError(formElement, inputElement, errorMessage) {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.add('popup__input_type_error');
-  errorElement.textContent = errorMessage;
-  errorElement.classList.add('popup__input-error_active');
-}
-
-function hideInputError(formElement, inputElement) {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.remove('popup__input_type_error');
-  errorElement.classList.remove('popup__input-error_active');
-  errorElement.textContent = '';
-}
-
-function checkInputValidity(formElement, inputElement) {
-  if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputElement.validationMessage);
-  } else {
-    hideInputError(formElement, inputElement);
-  }
-}
-
-function hasInvalidInput(inputList) {
-  return inputList.some(inputElement => !inputElement.validity.valid)
-}
-
-function toggleButtonState(inputList, buttonElement) {
-  if (hasInvalidInput(inputList)) {
-    buttonElement.classList.add('popup__button_inactive');
-  } else {
-    buttonElement.classList.remove('popup__button_inactive');
-  }
-}
-
-function setEventListeners(formElement) {
-  const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
-  const buttonElement = formElement.querySelector('.popup__button');
-
-  toggleButtonState(inputList, buttonElement);
-
-  inputList.forEach(inputElement => {
-    inputElement.addEventListener('input', () => {
-      checkInputValidity(formElement, inputElement);
-      toggleButtonState(inputList, buttonElement);
-    })
-  })
-}
-
-function enableValidation() {
-  const formList = Array.from(document.querySelectorAll('.popup__form'));
-  formList.forEach(formElement => {
-    formElement.addEventListener('submit', (evt) => {
-      evt.preventDefault();
-    })
-
-    setEventListeners(formElement);
-  })
+  deleteCard(cardID)
 }
 
 enableValidation()

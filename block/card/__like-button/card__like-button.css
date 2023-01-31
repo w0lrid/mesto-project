@@ -4,7 +4,7 @@
   background-color: transparent;
   width: 22px;
   height: 19px;
-  background-image: url(../../../images/like-button.svg);
+  background-image: url(../../../src/images/like-button.svg);
   transition: .2s;
 }
 
