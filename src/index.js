@@ -200,14 +200,15 @@ function handleProfileEditSubmit() {
 function handleNewCardSubmit() {
   event.preventDefault();
 
-  const card = createCard(0, placeNameInput.value, placeLinkInput.value, userID);
-  sendCard({name: placeNameInput.value, link: placeLinkInput.value}).then(res => {
-    console.log(res)
-  })
-  renderCard(card);
-  formAddCard.reset();
+  sendCard({name: placeNameInput.value, link: placeLinkInput.value})
+    .then(res => {
+      const {likes, name, link, owner, _id} = res;
+      const card = createCard(likes, name, link, owner._id, _id);
+      renderCard(card);
+      formAddCard.reset();
+      closePopup(popupAddCard);
+    })
 
-  closePopup(popupAddCard);
 }
 
 function handleLikeCard(cardID, likeButton, likes) {
