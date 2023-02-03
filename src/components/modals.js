@@ -1,7 +1,6 @@
 function closeByEscape(evt) {
   if (evt.key.toLowerCase() === "escape") {
-    const activePopup = document.querySelector(".popup_active");
-    closePopup(activePopup);
+    closePopup(document.querySelector(".popup_active"));
   }
 }
 function openPopup(popup) {

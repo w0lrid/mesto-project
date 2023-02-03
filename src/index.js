@@ -100,7 +100,7 @@ buttonAddCard.addEventListener("click", () => openPopup(popupAddCard));
 formEditAvatar.addEventListener("submit", handleAvatarEditSubmit);
 formEditProfile.addEventListener("submit", handleProfileEditSubmit);
 formAddCard.addEventListener("submit", handleNewCardSubmit);
-formDeleteCard.addEventListener("submit", () => removeCard(deleteCardID))
+formDeleteCard.addEventListener("submit", (evt) => removeCard(evt, deleteCardID))
 
 // --------------------------------
 
@@ -175,24 +175,27 @@ function handleAvatarEditSubmit(evt) {
 
 }
 
-function handleProfileEditSubmit() {
-  event.preventDefault();
-
-  profileName.textContent = nameInput.value;
-  profileDescription.textContent = descriptionInput.value;
+function handleProfileEditSubmit(evt) {
+  evt.preventDefault();
 
   editUser({
     name: nameInput.value,
     about: descriptionInput.value,
+  }).then(res => {
+    const {name, about} = res
+    profileName.textContent = name;
+    profileDescription.textContent = about;
+    closePopup(popupEditProfile);
   });
-  closePopup(popupEditProfile);
 }
 
 function handleNewCardSubmit() {
   event.preventDefault();
 
-  sendCard({name: placeNameInput.value, link: placeLinkInput.value})
-    .then(res => {
+  sendCard({
+    name: placeNameInput.value,
+    link: placeLinkInput.value
+  }).then(res => {
       const {likes, name, link, owner, _id} = res;
       const card = createCard(likes, name, link, owner._id, _id);
       renderCard(card);
@@ -216,10 +219,12 @@ function handleLikeCard(cardID, likeButton, likes) {
   }
 }
 
-function removeCard(cardID) {
-  document.querySelector(`[data-id="${cardID}"]`).remove();
-  deleteCard(cardID);
-  closePopup(popupDeleteCard);
+function removeCard(evt, cardID) {
+  evt.preventDefault();
+  deleteCard(cardID).then(() => {
+    document.querySelector(`[data-id="${cardID}"]`).remove();
+    closePopup(popupDeleteCard);
+  });
 }
 
 enableValidation({
