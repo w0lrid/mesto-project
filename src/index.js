@@ -189,8 +189,8 @@ function handleProfileEditSubmit(evt) {
   });
 }
 
-function handleNewCardSubmit() {
-  event.preventDefault();
+function handleNewCardSubmit(evt) {
+  evt.preventDefault();
 
   sendCard({
     name: placeNameInput.value,
@@ -206,17 +206,25 @@ function handleNewCardSubmit() {
 }
 
 function handleLikeCard(cardID, likeButton, likes) {
-  likeButton.classList.toggle("card__like-button_active");
-
   if (!Array.from(likeButton.classList).includes("card__like-button_active")) {
     unlikeCard(cardID).then(res => {
-      likes.textContent = res.likes.length
+      likes.textContent = res.likes.length;
+      addLike(likeButton);
     })
   } else {
     likeCard(cardID).then(res => {
-      likes.textContent = res.likes.length
+      likes.textContent = res.likes.length;
+      removeLike(likeButton);
     })
   }
+}
+
+function addLike(likeButton) {
+  likeButton.classList.add("card__like-button_active");
+}
+
+function removeLike(likeButton) {
+  likeButton.classList.remove("card__like-button_active");
 }
 
 function removeCard(evt, cardID) {
