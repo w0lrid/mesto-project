@@ -5,4 +5,6 @@ const checkResponse = (res) => {
 
   return Promise.reject(`Ошибка ${res.status}`);
 };
-export const request = (url, options) => fetch(url, options).then(checkResponse);
+const request = (url, options) => fetch(url, options).then(checkResponse);
+
+export {request}
