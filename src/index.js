@@ -70,21 +70,24 @@ const captionCardPopup = cardPopup.querySelector(".popup__image-caption");
 // --------------------------------
 
 // PROCESS ELEMENTS
-let userID;
-let deleteCardID;
-getUser().then(({avatar, name, about, _id}) => {
-  profileAvatar.src = avatar;
-  profileName.textContent = name;
-  profileDescription.textContent = about;
-  userID = _id;
-})
+let userID, deleteCardID;
+Promise.all([getUser(), getInitialCards()])
+  .then(([user, cards]) => {
+    const {avatar, name, about, _id} = user;
 
-getInitialCards().then(res => {
-  res.forEach(({likes, name, link, owner, _id}) => {
-    const card = createCard(likes, name, link, owner._id, _id);
-    renderCard(card);
-  });
-})
+    profileAvatar.src = avatar;
+    profileName.textContent = name;
+    profileDescription.textContent = about;
+    userID = _id;
+
+    cards.forEach(({likes, name, link, owner, _id}) => {
+      const card = createCard(likes, name, link, owner._id, _id);
+      renderCard(card);
+    })
+  })
+  .catch(err => {
+    console.log(`olala, we've the error: ${err}`);
+  })
 
 popups.forEach(popup => {
   popup.addEventListener('click', (evt) => {
