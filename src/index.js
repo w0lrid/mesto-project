@@ -163,15 +163,16 @@ function renderCard(card) {
   cardsGallery.prepend(card);
 }
 
-function handleAvatarEditSubmit() {
-  event.preventDefault();
+function handleAvatarEditSubmit(evt) {
+  evt.preventDefault();
 
-  profileAvatar.src = avatarInput.value;
   editAvatar({
     avatar: avatarInput.value,
+  }).then(res => {
+    profileAvatar.src = res.avatar;
+    closePopup(popupEditAvatar);
   })
 
-  closePopup(popupEditAvatar);
 }
 
 function handleProfileEditSubmit() {
