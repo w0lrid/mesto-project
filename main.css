@@ -11,16 +11,16 @@
 .profile__info{flex-basis:580px}@media screen and (max-width:767px){.profile__info{flex-basis:0;margin-bottom:36px;text-align:center}}
 .profile__title{align-items:baseline;display:flex;margin-bottom:7px}
 .profile__name{color:#fff;font-size:42px;font-weight:500;line-height:48px;margin:0 18px 0 0;max-width:330px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}@media screen and (max-width:767px){.profile__name{font-size:27px;line-height:32.68px;margin-right:10px;max-width:254px}}
-.profile__edit-button{background-color:transparent;background-image:url(a1892ea72cb87c8fc3aa.svg);border:none;height:24px;padding:0;transition:.2s;width:24px}.profile__edit-button:hover{cursor:pointer;opacity:.6}@media screen and (max-width:767px){.profile__edit-button{background-image:url(2f7be95ab48bbff7d88c.svg);height:18px;width:18px}}
+.profile__edit-button{background-color:transparent;background-image:url(af236f6cf67005f1d7aa.svg);border:none;height:24px;padding:0;transition:.2s;width:24px}.profile__edit-button:hover{cursor:pointer;opacity:.6}@media screen and (max-width:767px){.profile__edit-button{background-image:url(f66e917d7fb212913c9e.svg);height:18px;width:18px}}
 .profile__subtitle{color:#fff;font-size:18px;font-weight:400;line-height:21.78px;margin:0}@media screen and (max-width:767px){.profile__subtitle{font-size:14px;line-height:16.94px}}
-.profile__add-button{background-color:transparent;background-image:url(6f41966c71dd7895857f.svg);border:none;height:50px;padding:0;transition:.2s;width:150px}.profile__add-button:hover{cursor:pointer;opacity:.6}@media screen and (max-width:767px){.profile__add-button{background-image:url(6f86ece55e54220c5485.svg);width:282px}}
+.profile__add-button{background-color:transparent;background-image:url(13997fdf54b4cb323817.svg);border:none;height:50px;padding:0;transition:.2s;width:150px}.profile__add-button:hover{cursor:pointer;opacity:.6}@media screen and (max-width:767px){.profile__add-button{background-image:url(8e041299935e2fbbe15e.svg);width:282px}}
 .cards-gallery{display:grid;gap:20px 17px;grid-template-columns:repeat(auto-fit,282px);justify-content:center;max-width:100%;padding-top:51px}
 .card{background-color:#fff;border-radius:10px;padding-bottom:31px;position:relative}
 .card__image{border-radius:10px 10px 0 0;display:block;filter:brightness(70%);height:282px;margin-bottom:25px;width:282px}
 .card__info{align-items:center;display:flex;justify-content:space-between;padding-left:21px;padding-right:15px}
 .card__title{color:#000;font-size:24px;font-weight:900;line-height:29.05px;margin:0;max-width:185px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.card__like-button{background-color:transparent;background-image:url(7913ddfd147a48616b09.svg);border:none;height:19px;padding:0;transition:.2s;width:22px}.card__like-button:hover{cursor:pointer;opacity:.5}
-.card__like-button_active{background-image:url(fe17a515669479b1e649.svg)}
+.card__like-button{background-color:transparent;background-image:url(0e390048c288271ab07f.svg);border:none;height:19px;padding:0;transition:.2s;width:22px}.card__like-button:hover{cursor:pointer;opacity:.5}
+.card__like-button_active{background-image:url(35948469632d0421d697.svg)}
 .card__likes{align-items:center;display:flex;flex-direction:column;row-gap:3px}
 card__likes-number{font-size:13px;font-weight:400;line-height:16px}
 .card__delete-button{background-color:transparent;background-image:url(f2ee24675c8a3df0d39e.svg);border:none;height:19px;padding:0;position:absolute;right:20px;top:20px;transition:.2s;width:18px}.card__delete-button:hover{cursor:pointer;opacity:.5}
@@ -42,5 +42,5 @@ card__likes-number{font-size:13px;font-weight:400;line-height:16px}
 .popup__image-container{margin:0}
 .popup__image{display:block;max-height:75vh;max-width:75vw;-o-object-fit:contain;object-fit:contain}
 .popup__image-caption{color:#fff;font-size:12px;font-weight:400;line-height:15px;padding-top:15px}
-.popup__close{background-color:transparent;background-image:url(ad98de32e342afafa118.svg);background-size:contain;border:none;height:32px;padding:0;position:absolute;right:-40px;top:-40px;transition:.2s;width:32px}.popup__close:hover{cursor:pointer;opacity:.6}@media screen and (max-width:767px){.popup__close{height:20px;right:0;top:-36px;width:20px}}
+.popup__close{background-color:transparent;background-image:url(973e77374abfb705de40.svg);background-size:contain;border:none;height:32px;padding:0;position:absolute;right:-40px;top:-40px;transition:.2s;width:32px}.popup__close:hover{cursor:pointer;opacity:.6}@media screen and (max-width:767px){.popup__close{height:20px;right:0;top:-36px;width:20px}}
 
