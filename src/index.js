@@ -98,7 +98,10 @@ popups.forEach(popup => {
 })
 
 buttonEditProfile.addEventListener("click", setEditPopupInputs);
-profileAvatarContainer.addEventListener("click", () => openPopup(popupEditAvatar));
+profileAvatarContainer.addEventListener("click", () => {
+  disableButton(formEditAvatar)
+  openPopup(popupEditAvatar)
+});
 buttonAddCard.addEventListener("click", () => openPopup(popupAddCard));
 formEditAvatar.addEventListener("submit", handleAvatarEditSubmit);
 formEditProfile.addEventListener("submit", handleProfileEditSubmit);
@@ -260,6 +263,12 @@ function removeCard(evt, cardID) {
     .catch(err => {
       console.log(`olala, we've the error: ${err}`);
     });
+}
+
+function disableButton(formElement, submitButtonSelector = '.popup__button', inactiveButtonClass = 'popup__button_inactive') {
+  formElement.reset();
+  formElement.querySelector(submitButtonSelector).classList.add(inactiveButtonClass);
+  formElement.querySelector(submitButtonSelector).disabled = true;
 }
 
 enableValidation({
