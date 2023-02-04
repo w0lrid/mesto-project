@@ -1,9 +1,8 @@
 import {closePopup} from "./modals";
 
-function disableButton(formElement, submitButtonSelector = '.popup__button', inactiveButtonClass = 'popup__button_inactive') {
-  formElement.reset();
-  formElement.querySelector(submitButtonSelector).classList.add(inactiveButtonClass);
-  formElement.querySelector(submitButtonSelector).disabled = true;
+function disableButton(submitButton, inactiveButtonClass = 'popup__button_inactive') {
+  submitButton.classList.add(inactiveButtonClass);
+  submitButton.disabled = true;
 }
 
 function renderLoading(isLoading, button, buttonText = 'Сохранить', loadingText = 'Сохранение...') {
@@ -28,7 +27,7 @@ function handleSubmit(request, evt, loadingText = "Сохранение...") {
 
       closePopup(popup);
       form.reset();
-      disableButton(form);
+      disableButton(submitButton);
     })
     .catch((err) => {
       console.log(`olala, we have the error: ${err}`);
