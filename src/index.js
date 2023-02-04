@@ -221,11 +221,11 @@ function handleNewCardSubmit(evt) {
 }
 
 function handleLikeCard(cardID, likeButton, likes) {
-  if (!Array.from(likeButton.classList).includes("card__like-button_active")) {
+  if (Array.from(likeButton.classList).includes("card__like-button_active")) {
     unlikeCard(cardID)
       .then(res => {
         likes.textContent = res.likes.length;
-        addLike(likeButton);
+        removeLike(likeButton);
       })
       .catch(err => {
         console.log(`olala, we've the error: ${err}`);
@@ -234,7 +234,7 @@ function handleLikeCard(cardID, likeButton, likes) {
     likeCard(cardID)
       .then(res => {
         likes.textContent = res.likes.length;
-        removeLike(likeButton);
+        addLike(likeButton);
       })
       .catch(err => {
         console.log(`olala, we've the error: ${err}`);
