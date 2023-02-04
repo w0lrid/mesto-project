@@ -30,7 +30,7 @@ const images = [
 // ELEMENTS DECLARATION
 
 // templates
-const cardTemplate = document.getElementById("card-template").content;
+const cardTemplate = document.querySelector("#card-template").content;
 
 // common elements
 const cardsGallery = document.querySelector(".cards-gallery");
@@ -56,13 +56,13 @@ const formAddCard = popupAddCard.querySelector(".popup__form");
 const formDeleteCard = popupDeleteCard.querySelector(".popup__form");
 
 // popup elements
-const avatarInput = document.getElementById("avatar-input");
+const avatarInput = document.querySelector("#avatar-input");
 
-const nameInput = document.getElementById("username-input");
-const descriptionInput = document.getElementById("user-description-input");
+const nameInput = document.querySelector("#username-input");
+const descriptionInput = document.querySelector("#user-description-input");
 
-const placeNameInput = document.getElementById("place-name-input");
-const placeLinkInput = document.getElementById("place-link-input");
+const placeNameInput = document.querySelector("#place-name-input");
+const placeLinkInput = document.querySelector("#place-link-input");
 
 const imageCardPopup = cardPopup.querySelector(".popup__image");
 const captionCardPopup = cardPopup.querySelector(".popup__image-caption");
