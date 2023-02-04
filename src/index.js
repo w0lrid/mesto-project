@@ -175,6 +175,8 @@ function renderCard(card) {
 function handleAvatarEditSubmit(evt) {
   evt.preventDefault();
 
+  processButton(formEditAvatar);
+
   editAvatar({
     avatar: avatarInput.value,
   })
@@ -185,11 +187,16 @@ function handleAvatarEditSubmit(evt) {
     .catch(err => {
       console.log(`olala, we've the error: ${err}`);
     })
+    .finally(() => {
+      finishButton(formEditAvatar, "Сохранить");
+    });
 
 }
 
 function handleProfileEditSubmit(evt) {
   evt.preventDefault();
+
+  processButton(formEditProfile);
 
   editUser({
     name: nameInput.value,
@@ -203,11 +210,16 @@ function handleProfileEditSubmit(evt) {
     })
     .catch(err => {
       console.log(`olala, we've the error: ${err}`);
+    })
+    .finally(() => {
+      finishButton(formEditProfile, "Сохранить");
     });
 }
 
 function handleNewCardSubmit(evt) {
   evt.preventDefault();
+
+  processButton(formAddCard);
 
   sendCard({
     name: placeNameInput.value,
@@ -222,6 +234,9 @@ function handleNewCardSubmit(evt) {
     })
     .catch(err => {
       console.log(`olala, we've the error: ${err}`);
+    })
+    .finally(() => {
+      finishButton(formAddCard, 'Создать');
     });
 
 }
@@ -272,6 +287,14 @@ function disableButton(formElement, submitButtonSelector = '.popup__button', ina
   formElement.reset();
   formElement.querySelector(submitButtonSelector).classList.add(inactiveButtonClass);
   formElement.querySelector(submitButtonSelector).disabled = true;
+}
+
+function processButton(formElement, submitButtonSelector = '.popup__button') {
+  formElement.querySelector(submitButtonSelector).textContent = 'Сохранение...'
+}
+
+function finishButton(formElement, textButton, submitButtonSelector = '.popup__button') {
+  formElement.querySelector(submitButtonSelector).textContent = textButton;
 }
 
 enableValidation({
