@@ -1,17 +1,17 @@
-import {enableValidation} from "./components/validate";
-import {openPopup, closePopup} from "./components/modals";
 import {
   editUser,
   getInitialCards,
   getUser,
   sendCard,
-  deleteCard,
   likeCard,
   unlikeCard,
   editAvatar
 } from "./components/api";
+import {enableValidation} from "./components/validate";
+import {openPopup, closePopup} from "./components/modals";
+import {renderCard, removeCard} from "./components/cards";
+import {handleSubmit} from "./components/utils";
 
-// добавить импорты картинок проекта
 import './styles/index.css';
 
 import AddButton from './images/add-button.svg';
@@ -23,8 +23,6 @@ import EditButtonBig from './images/edit-button_big.svg'
 import LikeButton from './images/like-button.svg'
 import LikeButtonActive from './images/like-button_active.svg'
 import MestoLogo from './images/mesto_logo.svg'
-import {renderCard, removeCard} from "./components/cards";
-import {disableButton, processButton, finishButton} from "./components/utils";
 
 const images = [
   {name: 'add-button', image: AddButton},
@@ -110,17 +108,15 @@ popups.forEach(popup => {
 
 buttonEditProfile.addEventListener("click", setEditPopupInputs);
 profileAvatarContainer.addEventListener("click", () => {
-  disableButton(formEditAvatar)
   openPopup(popupEditAvatar)
 });
 buttonAddCard.addEventListener("click", () => {
-  disableButton(formAddCard);
   openPopup(popupAddCard);
 });
 formEditAvatar.addEventListener("submit", handleAvatarEditSubmit);
 formEditProfile.addEventListener("submit", handleProfileEditSubmit);
 formAddCard.addEventListener("submit", handleNewCardSubmit);
-formDeleteCard.addEventListener("submit", (evt) => removeCard(evt, deleteCardID, popupDeleteCard))
+formDeleteCard.addEventListener("submit", (evt) => removeCard(evt, deleteCardID))
 
 // --------------------------------
 
@@ -180,55 +176,30 @@ function createCard(likes, name, link, ownerID, cardID) {
 }
 
 function handleAvatarEditSubmit(evt) {
-  evt.preventDefault();
-
-  processButton(formEditAvatar);
-
-  editAvatar({
-    avatar: avatarInput.value,
-  })
+  const makeRequest = () => editAvatar({avatar: avatarInput.value})
     .then(res => {
       profileAvatar.src = res.avatar;
-      closePopup(popupEditAvatar);
     })
-    .catch(err => {
-      console.log(`olala, we've the error: ${err}`);
-    })
-    .finally(() => {
-      finishButton(formEditAvatar, "Сохранить");
-    });
 
+  handleSubmit(makeRequest, evt);
 }
 
 function handleProfileEditSubmit(evt) {
-  evt.preventDefault();
-
-  processButton(formEditProfile);
-
-  editUser({
+  const makeRequest = () => editUser({
     name: nameInput.value,
     about: descriptionInput.value,
   })
-    .then(res => {
-      const {name, about} = res
+    .then(userData => {
+      const {name, about} = userData
       profileName.textContent = name;
       profileDescription.textContent = about;
-      closePopup(popupEditProfile);
-    })
-    .catch(err => {
-      console.log(`olala, we've the error: ${err}`);
-    })
-    .finally(() => {
-      finishButton(formEditProfile, "Сохранить");
     });
+
+  handleSubmit(makeRequest, evt);
 }
 
 function handleNewCardSubmit(evt) {
-  evt.preventDefault();
-
-  processButton(formAddCard);
-
-  sendCard({
+  const makeRequest = () => sendCard({
     name: placeNameInput.value,
     link: placeLinkInput.value
   })
@@ -237,16 +208,9 @@ function handleNewCardSubmit(evt) {
       const card = createCard(likes, name, link, owner._id, _id);
 
       renderCard(cardsGallery, card);
-      formAddCard.reset();
-      closePopup(popupAddCard);
-    })
-    .catch(err => {
-      console.log(`olala, we've the error: ${err}`);
-    })
-    .finally(() => {
-      finishButton(formAddCard, 'Создать');
     });
 
+  handleSubmit(makeRequest, evt);
 }
 
 function handleLikeCard(cardID, likeButton, likes) {

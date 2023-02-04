@@ -1,15 +1,41 @@
+import {closePopup} from "./modals";
+
 function disableButton(formElement, submitButtonSelector = '.popup__button', inactiveButtonClass = 'popup__button_inactive') {
   formElement.reset();
   formElement.querySelector(submitButtonSelector).classList.add(inactiveButtonClass);
   formElement.querySelector(submitButtonSelector).disabled = true;
 }
 
-function processButton(formElement, submitButtonSelector = '.popup__button') {
-  formElement.querySelector(submitButtonSelector).textContent = 'Сохранение...'
+function renderLoading(isLoading, button, buttonText = 'Сохранить', loadingText = 'Сохранение...') {
+  if (isLoading) {
+    button.textContent = loadingText
+  } else {
+    button.textContent = buttonText
+  }
 }
 
-function finishButton(formElement, textButton, submitButtonSelector = '.popup__button') {
-  formElement.querySelector(submitButtonSelector).textContent = textButton;
+function handleSubmit(request, evt, loadingText = "Сохранение...") {
+  evt.preventDefault();
+
+  const submitButton = evt.submitter;
+  const initialText = submitButton.textContent;
+
+  renderLoading(true, submitButton, initialText, loadingText);
+  request()
+    .then(() => {
+      const popup = evt.target.parentNode.parentNode;
+      const form = evt.target;
+
+      closePopup(popup);
+      form.reset();
+      disableButton(form);
+    })
+    .catch((err) => {
+      console.log(`olala, we have the error: ${err}`);
+    })
+    .finally(() => {
+      renderLoading(false, submitButton, initialText);
+    });
 }
 
-export {disableButton, processButton, finishButton}
+export {handleSubmit}

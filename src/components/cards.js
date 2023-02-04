@@ -1,21 +1,19 @@
-import {closePopup, openPopup} from "./modals";
+import {closePopup} from "./modals";
 import {deleteCard} from "./api";
+import {handleSubmit} from "./utils";
 
 function renderCard(gallery, card) {
   gallery.prepend(card);
 }
 
-function removeCard(evt, cardID, popupDeleteCard) {
-  evt.preventDefault();
-
-  deleteCard(cardID)
-    .then(() => {
-      document.querySelector(`[data-id="${cardID}"]`).remove();
-      closePopup(popupDeleteCard);
+function removeCard(evt, cardID) {
+  const makeRequest = () => {
+    return deleteCard(cardID).then(() => {
+      document.querySelector(`[data-id="${cardID}"]`).remove()
     })
-    .catch(err => {
-      console.log(`olala, we've the error: ${err}`);
-    });
+  }
+
+  handleSubmit(makeRequest, evt);
 }
 
 export {renderCard, removeCard}
