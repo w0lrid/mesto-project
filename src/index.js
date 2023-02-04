@@ -102,7 +102,10 @@ profileAvatarContainer.addEventListener("click", () => {
   disableButton(formEditAvatar)
   openPopup(popupEditAvatar)
 });
-buttonAddCard.addEventListener("click", () => openPopup(popupAddCard));
+buttonAddCard.addEventListener("click", () => {
+  disableButton(formAddCard);
+  openPopup(popupAddCard);
+});
 formEditAvatar.addEventListener("submit", handleAvatarEditSubmit);
 formEditProfile.addEventListener("submit", handleProfileEditSubmit);
 formAddCard.addEventListener("submit", handleNewCardSubmit);
