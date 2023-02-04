@@ -80,7 +80,7 @@ Promise.all([getUser(), getInitialCards()])
     profileDescription.textContent = about;
     userID = _id;
 
-    cards.forEach(({likes, name, link, owner, _id}) => {
+    cards.reverse().forEach(({likes, name, link, owner, _id}) => {
       const card = createCard(likes, name, link, owner._id, _id);
       renderCard(card);
     })
