@@ -1,4 +1,4 @@
-import {request} from "./utils/utils";
+import {request} from "../utils/utils";
 
 const config = {
   baseUrl: 'https://nomoreparties.co/v1/plus-cohort-19',
@@ -8,7 +8,7 @@ const config = {
   }
 }
 
-export const getUser = () => request(`${config.baseUrl}/users/me`, { headers: config.headers })
+export const getUser = () => request(`${config.baseUrl}/users/me`, {headers: config.headers})
 export const editAvatar = (avatar) => request(`${config.baseUrl}/users/me/avatar`, {
   method: 'PATCH',
   headers: config.headers,
@@ -19,7 +19,7 @@ export const editUser = (user) => request(`${config.baseUrl}/users/me`, {
   headers: config.headers,
   body: JSON.stringify(user)
 })
-export const getInitialCards = () => request(`${config.baseUrl}/cards`, { headers: config.headers })
+export const getInitialCards = () => request(`${config.baseUrl}/cards`, {headers: config.headers})
 export const sendCard = (card) => request(`${config.baseUrl}/cards`, {
   method: 'POST',
   headers: config.headers,

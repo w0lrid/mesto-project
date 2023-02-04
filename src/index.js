@@ -1,6 +1,15 @@
 import {enableValidation} from "./components/validate";
 import {openPopup, closePopup} from "./components/modals";
-import {editUser, getInitialCards, getUser, sendCard, deleteCard, likeCard, unlikeCard, editAvatar} from "./api";
+import {
+  editUser,
+  getInitialCards,
+  getUser,
+  sendCard,
+  deleteCard,
+  likeCard,
+  unlikeCard,
+  editAvatar
+} from "./components/api";
 
 // добавить импорты картинок проекта
 import './styles/index.css';
@@ -14,6 +23,8 @@ import EditButtonBig from './images/edit-button_big.svg'
 import LikeButton from './images/like-button.svg'
 import LikeButtonActive from './images/like-button_active.svg'
 import MestoLogo from './images/mesto_logo.svg'
+import {renderCard, removeCard} from "./components/cards";
+import {disableButton, processButton, finishButton} from "./components/utils";
 
 const images = [
   {name: 'add-button', image: AddButton},
@@ -82,7 +93,7 @@ Promise.all([getUser(), getInitialCards()])
 
     cards.reverse().forEach(({likes, name, link, owner, _id}) => {
       const card = createCard(likes, name, link, owner._id, _id);
-      renderCard(card);
+      renderCard(cardsGallery, card);
     })
   })
   .catch(err => {
@@ -109,7 +120,7 @@ buttonAddCard.addEventListener("click", () => {
 formEditAvatar.addEventListener("submit", handleAvatarEditSubmit);
 formEditProfile.addEventListener("submit", handleProfileEditSubmit);
 formAddCard.addEventListener("submit", handleNewCardSubmit);
-formDeleteCard.addEventListener("submit", (evt) => removeCard(evt, deleteCardID))
+formDeleteCard.addEventListener("submit", (evt) => removeCard(evt, deleteCardID, popupDeleteCard))
 
 // --------------------------------
 
@@ -168,10 +179,6 @@ function createCard(likes, name, link, ownerID, cardID) {
   return cardElement;
 }
 
-function renderCard(card) {
-  cardsGallery.prepend(card);
-}
-
 function handleAvatarEditSubmit(evt) {
   evt.preventDefault();
 
@@ -228,7 +235,8 @@ function handleNewCardSubmit(evt) {
     .then(res => {
       const {likes, name, link, owner, _id} = res;
       const card = createCard(likes, name, link, owner._id, _id);
-      renderCard(card);
+
+      renderCard(cardsGallery, card);
       formAddCard.reset();
       closePopup(popupAddCard);
     })
@@ -269,32 +277,6 @@ function addLike(likeButton) {
 
 function removeLike(likeButton) {
   likeButton.classList.remove("card__like-button_active");
-}
-
-function removeCard(evt, cardID) {
-  evt.preventDefault();
-  deleteCard(cardID)
-    .then(() => {
-      document.querySelector(`[data-id="${cardID}"]`).remove();
-      closePopup(popupDeleteCard);
-    })
-    .catch(err => {
-      console.log(`olala, we've the error: ${err}`);
-    });
-}
-
-function disableButton(formElement, submitButtonSelector = '.popup__button', inactiveButtonClass = 'popup__button_inactive') {
-  formElement.reset();
-  formElement.querySelector(submitButtonSelector).classList.add(inactiveButtonClass);
-  formElement.querySelector(submitButtonSelector).disabled = true;
-}
-
-function processButton(formElement, submitButtonSelector = '.popup__button') {
-  formElement.querySelector(submitButtonSelector).textContent = 'Сохранение...'
-}
-
-function finishButton(formElement, textButton, submitButtonSelector = '.popup__button') {
-  formElement.querySelector(submitButtonSelector).textContent = textButton;
 }
 
 enableValidation({
