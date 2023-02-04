@@ -1,8 +1,9 @@
 function closeByEscape(evt) {
-  if (evt.key.toLowerCase() === "escape") {
+  if (evt.key?.toLowerCase() === "escape") {
     closePopup(document.querySelector(".popup_active"));
   }
 }
+
 function openPopup(popup) {
   popup.classList.add("popup_active");
   document.addEventListener('keydown', closeByEscape)
