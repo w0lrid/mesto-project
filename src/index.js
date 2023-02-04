@@ -171,10 +171,14 @@ function handleAvatarEditSubmit(evt) {
 
   editAvatar({
     avatar: avatarInput.value,
-  }).then(res => {
-    profileAvatar.src = res.avatar;
-    closePopup(popupEditAvatar);
   })
+    .then(res => {
+      profileAvatar.src = res.avatar;
+      closePopup(popupEditAvatar);
+    })
+    .catch(err => {
+      console.log(`olala, we've the error: ${err}`);
+    })
 
 }
 
@@ -184,12 +188,16 @@ function handleProfileEditSubmit(evt) {
   editUser({
     name: nameInput.value,
     about: descriptionInput.value,
-  }).then(res => {
-    const {name, about} = res
-    profileName.textContent = name;
-    profileDescription.textContent = about;
-    closePopup(popupEditProfile);
-  });
+  })
+    .then(res => {
+      const {name, about} = res
+      profileName.textContent = name;
+      profileDescription.textContent = about;
+      closePopup(popupEditProfile);
+    })
+    .catch(err => {
+      console.log(`olala, we've the error: ${err}`);
+    });
 }
 
 function handleNewCardSubmit(evt) {
@@ -198,27 +206,39 @@ function handleNewCardSubmit(evt) {
   sendCard({
     name: placeNameInput.value,
     link: placeLinkInput.value
-  }).then(res => {
+  })
+    .then(res => {
       const {likes, name, link, owner, _id} = res;
       const card = createCard(likes, name, link, owner._id, _id);
       renderCard(card);
       formAddCard.reset();
       closePopup(popupAddCard);
     })
+    .catch(err => {
+      console.log(`olala, we've the error: ${err}`);
+    });
 
 }
 
 function handleLikeCard(cardID, likeButton, likes) {
   if (!Array.from(likeButton.classList).includes("card__like-button_active")) {
-    unlikeCard(cardID).then(res => {
-      likes.textContent = res.likes.length;
-      addLike(likeButton);
-    })
+    unlikeCard(cardID)
+      .then(res => {
+        likes.textContent = res.likes.length;
+        addLike(likeButton);
+      })
+      .catch(err => {
+        console.log(`olala, we've the error: ${err}`);
+      });
   } else {
-    likeCard(cardID).then(res => {
-      likes.textContent = res.likes.length;
-      removeLike(likeButton);
-    })
+    likeCard(cardID)
+      .then(res => {
+        likes.textContent = res.likes.length;
+        removeLike(likeButton);
+      })
+      .catch(err => {
+        console.log(`olala, we've the error: ${err}`);
+      });
   }
 }
 
@@ -232,10 +252,14 @@ function removeLike(likeButton) {
 
 function removeCard(evt, cardID) {
   evt.preventDefault();
-  deleteCard(cardID).then(() => {
-    document.querySelector(`[data-id="${cardID}"]`).remove();
-    closePopup(popupDeleteCard);
-  });
+  deleteCard(cardID)
+    .then(() => {
+      document.querySelector(`[data-id="${cardID}"]`).remove();
+      closePopup(popupDeleteCard);
+    })
+    .catch(err => {
+      console.log(`olala, we've the error: ${err}`);
+    });
 }
 
 enableValidation({
